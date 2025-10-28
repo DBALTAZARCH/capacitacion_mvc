@@ -3,10 +3,9 @@ from config import Config
 from models.database import create_tables
 
 def create_app():
-    app = Flask(__name__, template_folder='view')  # o 'templates' si prefieres
+    app = Flask(__name__, template_folder='view')
     app.config.from_object(Config)
 
-    # Registro de blueprints
     from controllers.auth_controller import bp as auth_controller
     app.register_blueprint(auth_controller, url_prefix='/auth')
 
@@ -25,12 +24,13 @@ def create_app():
     from controllers.usuarios_controller import bp as usuarios_controller
     app.register_blueprint(usuarios_controller, url_prefix='/usuarios')
     
-    # Crear tablas al iniciar la app
     with app.app_context():
         create_tables()
 
     return app
 
+# 👇 Añadir esto al final
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True)
